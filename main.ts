@@ -3,9 +3,9 @@ import { join } from "node:path";
 
 const MAX_CHARS = 199;
 
-// Generation 1 preliminary draft; will be replaced with the Generation 2 tournament champion.
+// Generation 2 blind-tournament champion (84 UTF-8 bytes, pure ASCII, single line).
 const JOKE =
-  "I signed the breakroom card 'Best of luck on your next chapter!' before realizing it was a get-well card for Dave's heart surgery.";
+  'My boss ran late to our "quick chat," so FedEx emailed my laptop return label first.';
 
 function validateEntry(text: string): string {
   const cleaned = text.trim();
@@ -14,6 +14,9 @@ function validateEntry(text: string): string {
   }
   if (/[\r\n]/.test(cleaned)) {
     throw new Error("Entry must be a single line with no newline characters");
+  }
+  if (/[\x00-\x1f\x7f]/.test(cleaned)) {
+    throw new Error("Entry must not contain control characters");
   }
   return cleaned;
 }
